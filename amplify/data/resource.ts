@@ -10,9 +10,24 @@ const schema = a.schema({
   Todo: a
     .model({
       content: a.string(),
+      isDone: a.boolean(),
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+  Chat: a.model({
+    name: a.string(),
+    message: a.hasMany('Message', 'chatId'),
+  }),
+
+  Message: a.model({
+    text: a.string(),
+    chat: a.belongsTo('Chat', 'chatId'),
+    chatId: a.id()
+  }),
+
 });
+
+
 
 export type Schema = ClientSchema<typeof schema>;
 
